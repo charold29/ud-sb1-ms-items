@@ -1,5 +1,6 @@
 package io.charoldev.msitems.service;
 
+import feign.FeignException;
 import io.charoldev.msitems.client.ProductFeignClient;
 import io.charoldev.msitems.model.ItemDto;
 import io.charoldev.msitems.model.ProductDto;
@@ -34,11 +35,11 @@ public class ItemServiceImpl implements IItemService {
 
     @Override
     public Optional<ItemDto> findById(Long id) {
-        ProductDto productDto = client.details(id);
-        if (productDto == null) {
+        try{
+            ProductDto product = client.details(id);
+            return Optional.of(new ItemDto(product, 1, product.getPrice()));
+        } catch (FeignException e){
             return Optional.empty();
         }
-        return Optional.of(new ItemDto(
-                client.details(id), 1, client.details(id).getPrice()));
     }
 }

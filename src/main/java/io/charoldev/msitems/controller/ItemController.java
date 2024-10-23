@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,12 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemDto> details(@PathVariable Long id) {
-        Optional <ItemDto> itemOptional = itemService.findById(id);
+    public ResponseEntity<?> details(@PathVariable Long id) {
+        Optional <?> itemOptional = itemService.findById(id);
         return itemOptional
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.status(404)
+                        .body(Collections.singletonMap("message", "Item not found"))
+                );
     }
 }
