@@ -23,9 +23,11 @@ public class ItemServiceImpl implements IItemService {
                 .stream()
                 .map((ProductDto product) -> {
                     Random random = new Random();
+                    Integer quantity = random.nextInt(10) + 1;
                     return new ItemDto(
                             product,
-                            random.nextInt(10) + 1
+                            quantity,
+                            product.getPrice() * quantity
                     );
                 }).collect(Collectors.toList());
     }
@@ -36,6 +38,7 @@ public class ItemServiceImpl implements IItemService {
         if (productDto == null) {
             return Optional.empty();
         }
-        return Optional.of(new ItemDto(client.details(id), 1));
+        return Optional.of(new ItemDto(
+                client.details(id), 1, client.details(id).getPrice()));
     }
 }
