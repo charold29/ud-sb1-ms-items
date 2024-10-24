@@ -3,17 +3,16 @@ package io.charoldev.msitems.service;
 import io.charoldev.msitems.model.ItemDto;
 import io.charoldev.msitems.model.ProductDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Primary
-public class ItemServiceWebClientImpl implements IItemService{
+public class ItemServiceWebClient implements IItemService{
 
     private final WebClient.Builder webClient;
 
@@ -33,12 +32,16 @@ public class ItemServiceWebClientImpl implements IItemService{
 
     @Override
     public Optional<ItemDto> findById(Long id) {
-        return webClient.build()
-                .get()
-                .uri("/{id}", id)
-                .retrieve()
-                .bodyToMono(ProductDto.class)
-                .map((ProductDto product) -> new ItemDto(product, 1, product.getPrice()))
-                .blockOptional();
+        try{
+            return webClient.build()
+                    .get()
+                    .uri("/{id}", id)
+                    .retrieve()
+                    .bodyToMono(ProductDto.class)
+                    .map((ProductDto product) -> new ItemDto(product, 1, product.getPrice()))
+                    .blockOptional();
+        } catch (WebClientResponseException e){
+            return Optional.empty();
+        }
     }
 }
