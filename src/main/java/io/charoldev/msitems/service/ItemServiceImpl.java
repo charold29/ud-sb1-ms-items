@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,8 +22,7 @@ public class ItemServiceImpl implements IItemService {
         return client.findAll()
                 .stream()
                 .map((ProductDto product) -> {
-                    Random random = new Random();
-                    Integer quantity = random.nextInt(10) + 1;
+                    Integer quantity = (int) (Math.random() * 10) + 1;
                     return new ItemDto(
                             product,
                             quantity,

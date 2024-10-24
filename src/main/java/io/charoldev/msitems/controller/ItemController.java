@@ -1,7 +1,7 @@
 package io.charoldev.msitems.controller;
 
 import io.charoldev.msitems.model.ItemDto;
-import io.charoldev.msitems.service.ItemServiceImpl;
+import io.charoldev.msitems.service.IItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/api/items")
 public class ItemController {
 
-    private final ItemServiceImpl itemService;
+    private final IItemService itemService;
 
     @GetMapping
     public List<ItemDto> list() {
