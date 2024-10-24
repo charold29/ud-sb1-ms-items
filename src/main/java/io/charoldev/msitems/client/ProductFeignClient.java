@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(url = "http://localhost:8001/api/products", name = "ms-products")
+@FeignClient(name = "ms-products")
 public interface ProductFeignClient {
 
-    @GetMapping
+    @GetMapping("/api/products")
     List<ProductDto> findAll();
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/products/{id}")
     ProductDto details(@PathVariable Long id);
 }
