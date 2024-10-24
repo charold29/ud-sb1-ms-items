@@ -1,5 +1,6 @@
 package io.charoldev.msitems.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +14,14 @@ import java.util.Collections;
 @Configuration
 public class WebClientConfig {
 
+    @Value("${config.baseurl.endpoint.ms-products}")
+    private String BASE_URL;
+
     @Bean
     @LoadBalanced
     public WebClient.Builder webClientBuilder() {
         return WebClient.builder()
-                .baseUrl("http://ms-products/api/products");
+                .baseUrl(BASE_URL);
     }
 
     @Bean
